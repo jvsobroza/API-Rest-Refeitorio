@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->date('data');
             $table->string('refeicao');
-            $table->string('turno');
+            $table->string('complemento')->nullable();
+            $table->integer('turno');
             $table->timestamps();
             });
     }
