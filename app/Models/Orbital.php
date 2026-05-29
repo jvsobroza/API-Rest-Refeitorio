@@ -11,6 +11,7 @@ class Orbital extends Model
     protected $fillable = [
         'data',
         'refeicao',
+        'complemento',
         'turno'
     ];
 }
