@@ -16,7 +16,7 @@ class ApiController extends Controller
 
     public function getRefeicoes()
     {
-        $refeicoes = Orbital::orderBy('data', 'asc')->get()->toJson(JSON_PRETTY_PRINT);
+        $refeicoes = Orbital::orderBy('data', 'asc')->where('data', '>=', date('Y-m-d'))->get()->toJson(JSON_PRETTY_PRINT);
         return response($refeicoes, 200);
     }
     public function getRefeicoesByData($data)
