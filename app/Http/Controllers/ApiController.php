@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreOrbitalRequest;
 use App\Models\Orbital;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class ApiController extends Controller
 {
@@ -13,6 +14,17 @@ class ApiController extends Controller
     //postRefeições
     //putRefeições
     //deleteRefeições
+
+    public function index()
+    {
+        //usando carbom para datas
+        $hoje = Carbon::today()->format('Y-m-d');
+        $semana = Carbon::today()->addWeek()->format('Y-m-d');
+        $refeicoes = Orbital::whereBetween('data', [$hoje, $semana])
+            ->orderBy('data', 'asc')
+            ->get();
+        return view('welcome', compact('refeicoes'));
+    }
 
     public function getRefeicoes()
     {
@@ -30,7 +42,7 @@ class ApiController extends Controller
             return response()->json([
                 "message" => "Turno inválido. Os valores permitidos são: 1 (café), 2 (almoço), 3 (jantar)."
             ], 400);
-        } 
+        }
         if ($request->data < date('Y-m-d')) {
             return response()->json([
                 "message" => "Data inválida. A data deve ser igual ou posterior à data atual."
@@ -41,8 +53,7 @@ class ApiController extends Controller
             return response()->json([
                 "message" => "Já existe uma refeição cadastrada para esta data e turno."
             ], 400);
-        }
-        else {
+        } else {
             try {
                 $refeicao = new Orbital();
                 $refeicao->data = $request->data;
@@ -74,7 +85,7 @@ class ApiController extends Controller
             return response()->json([
                 "message" => "Turno inválido. Os valores permitidos são: 1 (café), 2 (almoço), 3 (jantar)."
             ], 400);
-        } 
+        }
         if ($request->data < date('Y-m-d')) {
             return response()->json([
                 "message" => "Data inválida. A data deve ser igual ou posterior à data atual."
@@ -85,8 +96,7 @@ class ApiController extends Controller
             return response()->json([
                 "message" => "Já existe uma refeição cadastrada para esta data e turno."
             ], 400);
-        }
-        else {
+        } else {
             try {
                 $refeicao->data = $request->data;
                 $refeicao->refeicao = $request->refeicao;
